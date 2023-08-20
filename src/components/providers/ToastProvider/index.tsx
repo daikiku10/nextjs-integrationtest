@@ -14,10 +14,12 @@ export const ToastProvider = ({
   children,
   defaultState,
 }: {
-  children: ReactNode;
+    children: ReactNode;
+  // 初期値を注入できるように作り込んでおく
   defaultState?: Partial<ToastState>;
 }) => {
   const { isShown, message, style, showToast, hideToast } =
+    // Providerの初期値としてdefaultStateを渡す
     useToastProvider(defaultState);
   return (
     <ToastStateContext.Provider value={{ isShown, message, style }}>

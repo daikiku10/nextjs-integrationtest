@@ -14,6 +14,7 @@ export const initialState: ToastState = {
   style: "succeed",
 };
 
+// 状態を保持するContext
 export const ToastStateContext = createContext(initialState);
 
 export type ToastAction = {
@@ -26,4 +27,5 @@ export const initialAction: ToastAction = {
   hideToast: () => {},
 };
 
+// 状態更新関数を保持するContext
 export const ToastActionContext = createContext(initialAction);

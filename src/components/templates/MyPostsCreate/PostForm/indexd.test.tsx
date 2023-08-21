@@ -44,5 +44,37 @@ export function setup() {
     onValid,
     onInvalid,
   };
-
 }
+
+test("不適正内容で下書き保存を試みると、バリデーションエラーが表示される", async () => {
+  const { saveAsDraft } = setup();
+  await saveAsDraft();
+  // 非同期関数 リトライのために用意された関数
+  // バリデーションエラーが表示されるまで時間がかかるため、所定時間の間はアサートをリトライし続ける。
+  await waitFor(() =>
+    expect(
+      screen.getByRole("textbox", { name: "記事タイトル" })
+    ).toHaveErrorMessage("1文字以上入力してください")
+  );
+});
+
+test("不適正内容で下書き保存を試みると、onInvalidイベントハンドラーが実行される", async () => {
+  const { saveAsDraft, onClickSave, onValid, onInvalid } = setup();
+  await saveAsDraft();
+  expect(onClickSave).toHaveBeenCalled();
+  expect(onValid).not.toHaveBeenCalled();
+  expect(onInvalid).toHaveBeenCalled();
+});
+
+test("適正内容で「下書き保存」を試みると、onValidイベントハンドラーが実行される", async () => {
+  mockUploadImage();
+
+  const { typeTitle, saveAsDraft, onClickSave, onValid, onInvalid } = setup();
+  const { selectImage } = selectImageFile();
+  await typeTitle("私の技術記事");
+  await selectImage();
+  await saveAsDraft();
+  expect(onClickSave).toHaveBeenCalled();
+  expect(onValid).toHaveBeenCalled();
+  expect(onInvalid).not.toHaveBeenCalled();
+});

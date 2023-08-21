@@ -16,8 +16,11 @@ import styles from "./styles.module.css";
 type Props<T extends FieldValues = PostInput> = {
   title: string;
   children?: React.ReactNode;
+  // 保存ボタンが押下された時実行される
   onClickSave: (isPublish: boolean) => void;
+  // 適正内容で送信を試みた場合実行される
   onValid: SubmitHandler<T>;
+  // 不適正内容で送信を試みた場合実行される
   onInvalid?: SubmitErrorHandler<T>;
 };
 
@@ -29,6 +32,7 @@ export const PostForm = (props: Props) => {
     control,
     formState: { errors, isSubmitting },
   } = useForm<PostInput>({
+    // 入力内容のバリデーションスキーマ
     resolver: zodResolver(createMyPostInputSchema),
   });
   return (

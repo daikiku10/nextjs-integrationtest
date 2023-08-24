@@ -40,6 +40,12 @@ export function setup() {
   return { typeTitle, saveAsPublished, saveAsDraft, clickButton, selectImage };
 }
 
+setupMockServer(...MyPosts.handlers, ...MyProfile.handlers);
+beforeEach(() => {
+  mockUploadImage();
+  // mockRouter.setCurrentUrl("/my/posts/create");
+});
+
 test("公開を試みたとき、AlertDialogが表示される", async () => {
   const { typeTitle, saveAsPublished, selectImage } = await setup();
   await typeTitle("201");
@@ -72,4 +78,41 @@ test("不適正内容で送信を試みると、AlertDialogが閉じる", async 
   await waitFor(() =>
     expect(screen.getByRole("textbox", { name: "記事タイトル" })).toBeInvalid());
   expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+});
+
+// Toast表示のテスト ----------------------
+test("API通信を開始したとき「保存中…」が表示される", async () => {
+  const { typeTitle, saveAsPublished, clickButton, selectImage } =
+    await setup();
+  await typeTitle("201");
+  await selectImage();
+  await saveAsPublished(); // 記事を公開する
+  await clickButton("はい");
+  await waitFor(() =>
+      expect(screen.getByRole("alert")).toHaveTextContent("保存中…")
+  );
+});
+
+test("公開に成功した場合「公開に成功しました」が表示される", async () => {
+  const { typeTitle, saveAsPublished, clickButton, selectImage } =
+    await setup();
+  await typeTitle("201");
+  await selectImage();
+  await saveAsPublished(); // 記事を公開する
+  await clickButton("はい");
+  await waitFor(() =>
+      expect(screen.getByRole("alert")).toHaveTextContent("公開に成功しました")
+  );
+});
+
+test("公開に失敗した場合「公開に失敗しました」が表示される", async () => {
+  const { typeTitle, saveAsPublished, clickButton, selectImage } =
+    await setup();
+  await typeTitle("500"); // 必ずエラーレスポンスを返すタイトル
+  await selectImage();
+  await saveAsPublished(); // 記事を公開する
+  await clickButton("はい");
+  await waitFor(() =>
+      expect(screen.getByRole("alert")).toHaveTextContent("公開に失敗しました")
+  );
 });

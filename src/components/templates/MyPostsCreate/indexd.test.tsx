@@ -31,7 +31,7 @@ export function setup() {
   }
   /** 「下書き」として保存試行する関数 */
   async function saveAsDraft() {
-    await user.click(screen.getByRole("button", { name: "下書きを保存する" }));
+    await user.click(screen.getByRole("button", { name: "下書き保存する" }));
   }
   /** AlertDialogの「はい/いいえ」を選択する関数 */
   async function clickButton(name:"はい" | "いいえ") {
@@ -43,7 +43,7 @@ export function setup() {
 setupMockServer(...MyPosts.handlers, ...MyProfile.handlers);
 beforeEach(() => {
   mockUploadImage();
-  // mockRouter.setCurrentUrl("/my/posts/create");
+  mockRouter.setCurrentUrl("/my/posts/create");
 });
 
 test("公開を試みたとき、AlertDialogが表示される", async () => {
@@ -115,4 +115,29 @@ test("公開に失敗した場合「公開に失敗しました」が表示さ�
   await waitFor(() =>
       expect(screen.getByRole("alert")).toHaveTextContent("公開に失敗しました")
   );
+});
+
+describe('画面遷移のテスト', () => {
+  test("下書き保存した場合、下書きした記事ページに遷移する", async () => {
+      const { typeTitle, saveAsDraft, selectImage } =
+    await setup();
+    await typeTitle("201");
+    await selectImage();
+    await saveAsDraft(); // 下書き保存
+    await waitFor(() =>
+      expect(mockRouter).toMatchObject({ pathname: "/my/posts/201"})
+    );
+  });
+    test("公開に成功した場合、画面遷移する", async () => {
+      const { typeTitle, saveAsPublished, clickButton, selectImage } =
+      await setup();
+      await typeTitle("201");
+      await selectImage();
+      await saveAsPublished(); // 記事を公開する
+      await clickButton("はい");
+      
+      await waitFor(() =>
+        expect(mockRouter).toMatchObject({ pathname: "/my/posts/201"})
+      );
+  });
 });

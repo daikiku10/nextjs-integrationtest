@@ -29,3 +29,17 @@ describe("アップロードに成功するテスト", () => {
     await waitFor(() => expect(screen.getByRole("img").getAttribute("src")).toBeTruthy());
   });
 });
+
+describe("アップロードが失敗するテスト", () => {
+  test("画像のアップロードに失敗した場合、アラートが表示される", async () => {
+    // 画像アップロードが失敗するように設定
+    mockUploadImage(500);
+    // コンポーネントをレンダリング
+    render(<TestComponent />);
+    // 画像を選択
+    const { selectImage } = selectImageFile();
+    await selectImage();
+    // 指定した文字列をもってToastが表示されることをアサート
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("画像のアップロードに失敗しました"));
+  });
+});

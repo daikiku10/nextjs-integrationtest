@@ -22,6 +22,7 @@ export const Avatar = (props: Props) => {
   const { onChangeImage, imageUrl } = useUploadImage({
     ...props,
     onRejected: () => {
+      // ③：画像アップロードに失敗した場合、失敗した旨が警告される
       showToast({
         message: `画像のアップロードに失敗しました`,
         style: "failed",
@@ -31,8 +32,10 @@ export const Avatar = (props: Props) => {
   return (
     <div className={styles.module}>
       <p className={styles.avatar}>
+        {/* ②：画像アップロードに成功すると、imageUrlに画像URLが格納される */}
         <img src={imageUrl || ""} alt="" />
       </p>
+      {/* ①：ボタン押下で画像を選択し、選択されたとき画像アップロードを試みる */}
       <InputFileButton
         buttonProps={{
           children: "写真を変更する",

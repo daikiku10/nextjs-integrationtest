@@ -47,7 +47,10 @@ export function useUploadImage<T extends FieldValues>({
     register(name);
   }, [register, name]);
 
+  // handleChangeFile関数はFileReaderオブジェクトを使用して画像ファイルを読み取る
   const onChangeImage = handleChangeFile((_, file) => {
+    // 読み取った画像内容がfileに格納される
+    // uploadImage関数はAPI Routerで実装された画像アップロード用のAPIを呼び出している
     uploadImage({ file })
       .then((data) => {
         const imgPath = `${data.url}/${data.filename}` as PathValue<T, Path<T>>;

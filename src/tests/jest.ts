@@ -16,10 +16,14 @@ export function selectImageFile(
   fileName = "hello.png",
   content = "hello"
 ) {
+  // userEventを初期化する
   const user = userEvent.setup();
+  // ダミーの画像ファイルを作成
   const filePath = [`C:\\fakepath\\${fileName}`];
   const file = new File([content], fileName, { type: "image/png" });
+  // renderしたコンポーネントに含まれるdata-testid="file"相当のinput要素を取得
   const fileInput = screen.getByTestId(inputTestId);
+  // この関数を実行すると、画像選択が再現される
   const selectImage = () => user.upload(fileInput, file);
   return { fileInput, filePath, selectImage };
 }

@@ -10,10 +10,11 @@ type Story = ComponentStoryObj<typeof Button>;
 
 export const Default: Story = {};
 
+// サイズの大きいボタンをStory登録
 export const Large: Story = {
   args: { variant: "large" },
 };
-
+// サイズの小さいボタンをStory登録
 export const Small: Story = {
   args: { variant: "small" },
 };

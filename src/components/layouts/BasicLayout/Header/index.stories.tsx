@@ -34,14 +34,14 @@ export const RouteMyPostsCreate: Story = {
 
 export const SPNotLogIn: Story = {
   parameters: {
-    ...SPStory.parameters,
+    ...SPStory.parameters, // SPレイアウト共通設定を適用する
     ...NotLoggedIn.parameters,
   },
 };
 
 export const SPLoggedIn: Story = {
   parameters: {
-    ...SPStory.parameters,
+    ...SPStory.parameters, // SPレイアウト共通設定を適用する
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -55,9 +55,9 @@ export const SPLoggedIn: Story = {
 export const SPLoggedInOpenedMenu: Story = {
   storyName: "SPレイアウトでドロワーメニューを開ける",
   parameters: {
-    ...SPStory.parameters,
+    ...SPStory.parameters, // SPレイアウト共通設定を適用する
     screenshot: {
-      ...SPStory.parameters.screenshot,
+      ...SPStory.parameters.screenshot, // SPレイアウト共通設定を適用する
       delay: 200,
     },
   },
@@ -77,9 +77,9 @@ export const SPLoggedInOpenedMenu: Story = {
 export const SPLoggedInClosedMenu: Story = {
   storyName: "SPレイアウトでドロワーメニューを閉じれる",
   parameters: {
-    ...SPStory.parameters,
+    ...SPStory.parameters, // SPレイアウト共通設定を適用する
     screenshot: {
-      ...SPStory.parameters.screenshot,
+      ...SPStory.parameters.screenshot, // SPレイアウト共通設定を適用する
       delay: 200,
     },
   },

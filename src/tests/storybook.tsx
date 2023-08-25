@@ -8,12 +8,16 @@ export const BasicLayoutDecorator = (
   Story: PartialStoryFn<ReactFramework, Args>
 ) => BasicLayout(<Story />);
 
+/** 各Storyのレンダリング関数ラッパー(Decorator) */
 export const LoginUserInfoProviderDecorator = (
   Story: PartialStoryFn<ReactFramework, Args>
 ) => (
+  // <div style={{ padding: '30px'}}> 余白を設けられる
   <LoginUserInfoProvider>
-    <Story />
+    {/* StoryがContext経由でLoginUserInfoを参照 */}
+    <Story /> 
   </LoginUserInfoProvider>
+  // </div>
 );
 
 export const SPStory = {

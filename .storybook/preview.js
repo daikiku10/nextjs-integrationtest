@@ -23,5 +23,5 @@ export const parameters = {
 };
 
 export const decorators = [mswDecorator, withScreenshot];
-
+// storybookでmswを有効にする
 initialize();
